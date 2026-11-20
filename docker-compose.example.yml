@@ -1,0 +1,64 @@
+services:
+  jobsearch:
+    # Synology's BuildKit fails with "seccomp not supported": build this tag with DOCKER_BUILDKIT=0 docker build.
+    image: ai-job-search-jobsearch:latest
+    build:
+      context: .
+      args:
+        # docs/architecture.md step 1 decides this. Set in .env: CLAUDE_CODE_VERSION=2.1.112 if latest crashes.
+        CLAUDE_CODE_VERSION: ${CLAUDE_CODE_VERSION:-latest}
+    container_name: ai-job-search
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ:-UTC}
+      # Passed through only when set in .env. Better than interactive login for unattended runs.
+      - ANTHROPIC_API_KEY
+      - CLAUDE_CODE_OAUTH_TOKEN
+      # Read by bin/apply-runner.mjs (all optional): how prompts name you, the CV file-name prefix,
+      # which track's CVs run first, and a right-to-work line for the CV contact block.
+      - CANDIDATE_NAME
+      - CV_FILE_PREFIX
+      - TRACK_ORDER
+      - RIGHT_TO_WORK_LINE
+    volumes:
+      # Claude Code login, bun portal CLIs, deploy keys and git config persist here
+      - ./home:/home/node
+      # Three private copies of ai-job-search, one per track
+      - ./repo-hk:/repos/hk
+      - ./repo-uk:/repos/uk
+      - ./repo-contract:/repos/contract
+      # Shared trackers, also mounted into the n8n container
+      - ./shared:/shared
+    mem_limit: 4g
+
+  n8n:
+    image: n8nio/n8n:${N8N_VERSION:-2.45.7}
+    container_name: n8n
+    restart: unless-stopped
+    # Loopback only. Reach the editor over an SSH tunnel: ssh -L 5678:localhost:5678 <user>@<server>
+    # Google OAuth accepts http://localhost as a redirect, but not a LAN address.
+    ports:
+      - "127.0.0.1:5678:5678"
+    environment:
+      - TZ=${TZ:-UTC}
+      - GENERIC_TIMEZONE=${TZ:-UTC}
+      - N8N_HOST=localhost
+      - WEBHOOK_URL=http://localhost:5678/
+      - N8N_SECURE_COOKIE=false
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_DIAGNOSTICS_ENABLED=false
+      # n8n 2.x limits file nodes to ~/.n8n-files unless told otherwise.
+      - N8N_RESTRICT_FILE_ACCESS_TO=/shared;/repos
+      # WF2 and WF8 call the Telegram Bot API directly (buttons, reading replies) with this token from .env.
+      - TELEGRAM_BOT_TOKEN
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+    volumes:
+      - ./n8n-data:/home/node/.n8n
+      - ./shared:/shared
+      - ./repo-hk/inbox:/repos/hk/inbox
+      - ./repo-hk/reports:/repos/hk/reports
+      - ./repo-uk/inbox:/repos/uk/inbox
+      - ./repo-uk/reports:/repos/uk/reports
+      - ./repo-contract/inbox:/repos/contract/inbox
+      - ./repo-contract/reports:/repos/contract/reports
+    mem_limit: 2g

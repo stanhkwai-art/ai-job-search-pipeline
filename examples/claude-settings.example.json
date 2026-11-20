@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "additionalDirectories": ["/shared"],
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "WebSearch",
+      "WebFetch",
+      "Bash(bun --version)",
+      "Bash(bun run .agents/skills/*/cli/src/cli.ts *)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir -p:*)",
+      "Bash(lualatex:*)",
+      "Bash(xelatex:*)",
+      "Bash(pdftotext:*)"
+    ],
+    "deny": [
+      "Read(~/.claude/**)",
+      "Read(~/.claude.json)",
+      "Read(~/.ssh/**)",
+      "Read(~/.git-credentials)",
+      "Edit(//shared/career-bank/roles/**)",
+      "Edit(//shared/career-bank/projects/**)",
+      "Edit(//shared/career-bank/skills.md)",
+      "Edit(//shared/career-bank/profile.md)",
+      "Edit(//shared/career-bank/tailoring.md)",
+      "Edit(//shared/career-bank/masters/**)",
+      "Bash(git push:*)",
+      "Bash(git remote:*)",
+      "Bash(git config:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(env)",
+      "Bash(printenv:*)"
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{"type":"job","id":"20260101-auto1","at":"2026-01-01T07:45:00.000Z","track":"contract","title":"Network Engineer","company":"Example Agency","url":"https://jobs.example.com/123","score":4,"jd":"","needs_jd":false,"source":"auto: score 4+"}
+{"type":"job","id":"20260101-123456-1","at":"2026-01-01T09:00:00.000Z","track":"uk","title":"","company":"","url":"https://www.linkedin.com/jobs/view/1/","jd":"","needs_jd":true}
+{"type":"jd","id":"20260101-123456-1","at":"2026-01-01T09:01:00.000Z","text":"(first part of the pasted job description)"}
+{"type":"job","id":"20260101-manual1","at":"2026-01-01T09:30:00.000Z","track":"hk","title":"Head of IT","company":"Example Securities","url":"https://jobs.example.com/456","score":5,"jd":"","needs_jd":false,"notes":"Lead with regulated-industry leadership; say I am keen to learn the head office's language after joining."}
+{"type":"approve","id":"20260101-manual1","at":"2026-01-01T09:31:00.000Z"}
+{"type":"urgent","id":"20260101-auto1","at":"2026-01-01T10:00:00.000Z"}
+{"type":"prio","id":"20260101-auto1","at":"2026-01-01T10:01:00.000Z","n":1}
+{"type":"last","id":"20260101-123456-1","at":"2026-01-01T10:05:00.000Z"}
+{"type":"cancel","id":"20260101-123456-1","at":"2026-01-01T10:06:00.000Z"}

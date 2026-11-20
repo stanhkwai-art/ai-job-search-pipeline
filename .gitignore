@@ -1,0 +1,33 @@
+# Secrets and local config
+.env
+*.env
+!examples/.env.example
+docker-compose.yml
+
+# Generated n8n workflows (run n8n-builder/build.py)
+n8n-builder/out/
+
+# Personal data: never commit
+career-bank/
+shared/
+repo-*/
+home/
+n8n-data/
+cv-out/
+apply-out/
+*.csv
+apply-queue.jsonl
+apply-budget.json
+weekly/
+digest/
+tg-outbox/
+
+# Build and OS noise
+*.pdf
+*.aux
+*.log
+*.out
+node_modules/
+__pycache__/
+.DS_Store
+@eaDir/
